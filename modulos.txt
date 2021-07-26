@@ -3,3 +3,13 @@ git init
 git remote add origin https://github.com/anjoseles/ecommerce.git
 
 git add --all
+
+git commit -m "inicio do projeto"
+
+git push origin master
+
+composer dump-autoload
+
+git commit -m "autoload hcodebr classes"
+
+ 

@@ -4,7 +4,6 @@ namespace Hcode\Model;
 
 use \Hcode\DB\Sql;
 use \Hcode\Model;
-use \Hcode\Mailer;
 
 class Category extends Model {
 
@@ -48,7 +47,7 @@ class Category extends Model {
 
         $sql = new Sql();
 
-        $sql->query("DETELE FROM tb_categories WHERE idcategory = :idcategory", [
+        $sql->query("DELETE FROM tb_categories WHERE idcategory = :idcategory", [
             ':idcategory'=>$this->getidcategory()
         ]);
 

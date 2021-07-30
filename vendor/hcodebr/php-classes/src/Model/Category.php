@@ -110,7 +110,7 @@ class Category extends Model {
 
     }
 
-    public function getProductsPage($page = 1, $itemsPerPage = 8)
+    public function getProductsPage($page = 1, $itemsPerPage = 3)
     {
 
         $start = ($page - 1) * $itemsPerPage;
@@ -122,7 +122,7 @@ class Category extends Model {
             FROM tb_products a 
             INNER JOIN tb_productscategories b ON a.idproduct = b.idproduct
             INNER JOIN tb_categories c ON c.idcategory = b.idcategory
-            WHERE c.idcategory = id:category
+            WHERE c.idcategory = :idcategory
             LIMIT $start, $itemsPerPage;
 
         ", [

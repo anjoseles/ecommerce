@@ -103,7 +103,7 @@ $app->get("/admin/categories/:idcategory/products", function($idcategory){
 
 	$page->setTpl("categories-products", [
 		'category'=>$category->getValues(),
-		'productsRelated'=>$category->getProducts(),
+		'productsRelated'=>$category->getProducts(true),
 		'productsNotRelated'=>$category->getProducts(false)
 	]);
 

@@ -163,10 +163,6 @@ class Category extends Model {
         ]);
 
     }
-
-
-
 }
-
 
 ?>

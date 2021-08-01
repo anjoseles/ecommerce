@@ -173,77 +173,83 @@ class User extends Model {
             ":iduser"=>$this->getiduser()
         ));
     }
+
 /*  */
-public static function getForgot($email, $inadmin = true)
-{
-
-    $sql = new Sql();
-
-    $results = $sql->select("
-        SELECT *
-        FROM tb_persons a
-        INNER JOIN tb_users b USING(idperson)
-        WHERE a.desemail = :email;
-    ", array(
-        ":email"=>$email
-    ));
-
-    if (count($results) === 0)
+    public static function getForgot($email, $inadmin = true)
     {
 
-        throw new \Exception("Não foi possível recuperar a senha.");
+        $sql = new Sql();
 
-    }
-    else
-    {
-
-        $data = $results[0];
-
-        $results2 = $sql->select("CALL sp_userspasswordsrecoveries_create(:iduser, :desip)", array(
-            ":iduser"=>$data['iduser'],
-            ":desip"=>$_SERVER['REMOTE_ADDR']
+        $results = $sql->select("
+            SELECT *
+            FROM tb_persons a
+            INNER JOIN tb_users b USING(idperson)
+            WHERE a.desemail = :email;
+        ", array(
+            ":email"=>$email
         ));
 
-        if (count($results2) === 0)
+        if (count($results) === 0)
         {
-
             throw new \Exception("Não foi possível recuperar a senha.");
+        } else {
 
-        }
-        else
-        {
+            $data = $results[0];
 
-            $dataRecovery = $results2[0];
+            $results2 = $sql->select("CALL sp_userspasswordsrecoveries_create(:iduser, :desip)", array(
+                ":iduser"=>$data['iduser'],
+                ":desip"=>$_SERVER['REMOTE_ADDR']
+            ));
 
-            $code = openssl_encrypt($dataRecovery['idrecovery'], 'AES-128-CBC', pack("a16", User::SECRET), 0, pack("a16", User::SECRET)); //SECRET_IV
+            if (count($results2) === 0)
+            {
 
-            $code = base64_encode($code);
+                throw new \Exception("Não foi possível recuperar a senha.");
 
-            if ($inadmin === true) {
+            }
+            else
+            {
 
-                $link = "http://www.hcodecommerce.com.br/admin/forgot/reset?code=$code";
+                $dataRecovery = $results2[0];
 
-            } else {
+                $code = openssl_encrypt($dataRecovery['idrecovery'], 'AES-128-CBC', pack("a16", User::SECRET), 0, pack("a16", User::SECRET)); //SECRET_IV
 
-                $link = "http://www.hcodecommerce.com.br/forgot/reset?code=$code";
-                
-            }				
+                if ($inadmin === true) {
+                    
+                    $link = "http://www.hcodecommerce.com.br/admin/forgot/reset?code=$code";
 
-            $mailer = new Mailer($data['desemail'], $data['desperson'], "Redefinir senha da Hcode Store", "forgot", array(
-                "name"=>$data['desperson'],
-                "link"=>$link
-            ));				
+                } else {
 
-            $mailer->send();
+                    $link = "http://www.hcodecommerce.com.br/forgot/reset?code=$code";
 
-            return $link;
+                }
+
+                $code = base64_encode($code);
+
+                if ($inadmin === true) {
+
+
+                } else {
+
+                    $link = "http://www.hcodecommerce.com.br/forgot/reset?code=$code";
+                    
+                }				
+
+                $mailer = new Mailer($data['desemail'], $data['desperson'], "Redefinir senha da Hcode Store", "forgot", array(
+                    "name"=>$data['desperson'],
+                    "link"=>$link
+                ));				
+
+                $mailer->send();
+
+                return $link;
+
+            }
 
         }
 
     }
-
-}
-/*  */
+    /*  */
     public static function validForgotDecrypt($code)
     {
 

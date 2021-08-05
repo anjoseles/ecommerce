@@ -56,7 +56,6 @@ $app->post("/admin/users/:iduser/password", function($iduser){
 		header("Location: /admin/users/$iduser/password");
 		exit;
 
-
 });
 
 $app->get('/admin/users', function() {

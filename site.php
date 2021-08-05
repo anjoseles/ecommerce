@@ -169,14 +169,15 @@ $app->get("/checkout", function(){
         $cart->getCalculateTotal();
     }
 
-    if (!$address->getdesaddress()) $address->setdesaddress('');
+    if (!$address->getdesaddress())    $address->setdesaddress('');
+    if (!$address->getdesnumber())     $address->setdesnumber('');
     if (!$address->getdescomplement()) $address->setdescomplement('');
-    if (!$address->getdesdistrict()) $address->setdesdistrict('');
-    if (!$address->getdescity()) $address->setdescity('');
-    if (!$address->getdesstate()) $address->setdesstate('');
-    if (!$address->getdescountry()) $address->setdescountry('');
-    if (!$address->getdesaddress()) $address->setdesaddress('');
-    if (!$address->getdeszipcode()) $address->setdeszipcode('');
+    if (!$address->getdesdistrict())   $address->setdesdistrict('');
+    if (!$address->getdescity())       $address->setdescity('');
+    if (!$address->getdesstate())      $address->setdesstate('');
+    if (!$address->getdescountry())    $address->setdescountry('');
+    if (!$address->getdesaddress())    $address->setdesaddress('');
+    if (!$address->getdeszipcode())    $address->setdeszipcode('');
 
     $page = new Page();
 
